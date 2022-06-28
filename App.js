@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, SafeAreaView, Button} from 'react-native';
 import { NavigationContainer,DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {Home, Login,AllJobs,AddJob,Company,SelectedJob,AddCompany} from './src/pages';
+import {Home, Login,AllJobs,AddJob,Company,SelectedJob,AddCompany,Confirm} from './src/pages';
 import Auth from './src/utils/auth';
+import { TouchableOpacity } from 'react-native-web';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,12 +24,13 @@ export default function App() {
       <NavigationContainer theme={MyTheme}>
         <Stack.Navigator>
           <Stack.Screen name='login' component = {Login} />
-          <Stack.Screen name='Home' component = {Home} options={({navigation})=>({headerRight:()=>(<Button onPress={()=>logout(navigation)} title='Logout'/>)})}/>
+          <Stack.Screen name='Home' component = {Home} options={({navigation})=>({headerRight:()=>(<TouchableOpacity style={styles.logout} onPress={()=>logout(navigation)}><Text style={styles.logoutText}>Logout</Text></TouchableOpacity>)})}/>
           <Stack.Screen name='AllJobs' component = {AllJobs}  />
           <Stack.Screen name='AddCompany' component = {AddCompany}  />
           <Stack.Screen name='AddJob' component = {AddJob}  />
           <Stack.Screen name='Company' component = {Company}  />
           <Stack.Screen name='SelectedJob' component = {SelectedJob}  />
+          <Stack.Screen name='Confirm' component = {Confirm}  />
         
         </Stack.Navigator>
       </NavigationContainer>
@@ -45,4 +47,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  logout:{
+    padding:10
+  },
+  logoutText:{
+    color:'white',
+    fontWeight:400,
+    fontSize:18
+  }
 });

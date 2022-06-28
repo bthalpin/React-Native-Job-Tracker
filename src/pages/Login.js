@@ -51,6 +51,15 @@ function Login({navigation}) {
         
 
     }
+    const checkLoggedIn = async() => {
+        const loggedIn = await Auth.loggedIn()
+        if (loggedIn){
+            navigation.navigate('Home')
+        }
+    }
+    useEffect (()=>{
+        checkLoggedIn()
+    },[isFocused])
     // useEffect(()=>{
     //     if (isSelected){
     //         saveLogin()

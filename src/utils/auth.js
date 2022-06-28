@@ -4,17 +4,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class AuthService {
   async getProfile() {
-    console.log('before')
+    // console.log('before')
     const token = await this.getToken()
-    console.log(token)
+    // console.log(token)
     const profile =await decode(token);
-    console.log(profile)
+    // console.log(profile)
     return profile
   }
 
-  loggedIn() {
-    const token = this.getToken();
-    return token && !this.isTokenExpired(token) ? true : false;
+  async loggedIn() {
+    const token = await this.getToken();
+    const expired = await this.isTokenExpired(token)
+    return token && !expired;
   }
 
   async isTokenExpired(token) {
@@ -24,6 +25,7 @@ class AuthService {
         await AsyncStorage.removeItem('id_token');
         return true;
       }
+      
       return false;
 
     } catch (err) {
@@ -32,9 +34,9 @@ class AuthService {
   }
 
   async getToken() {
-    console.log('gettingtoken')
+    // console.log('gettingtoken')
     const token = await AsyncStorage.getItem('id_token')||'';
-    console.log(token,'token')
+    // console.log(token,'token')
     return token
   }
 
