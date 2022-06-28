@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, SafeAreaView, Button} from 'react-native';
 import { NavigationContainer,DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {Home, Login,AllJobs,AddJob,Company,SelectedJob} from './src/pages';
+import {Home, Login,AllJobs,AddJob,Company,SelectedJob,AddCompany} from './src/pages';
 import Auth from './src/utils/auth';
 
 const Stack = createNativeStackNavigator();
@@ -25,6 +25,7 @@ export default function App() {
           <Stack.Screen name='login' component = {Login} />
           <Stack.Screen name='Home' component = {Home} options={({navigation})=>({headerRight:()=>(<Button onPress={()=>logout(navigation)} title='Logout'/>)})}/>
           <Stack.Screen name='AllJobs' component = {AllJobs}  />
+          <Stack.Screen name='AddCompany' component = {AddCompany}  />
           <Stack.Screen name='AddJob' component = {AddJob}  />
           <Stack.Screen name='Company' component = {Company}  />
           <Stack.Screen name='SelectedJob' component = {SelectedJob}  />

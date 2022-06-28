@@ -1,17 +1,68 @@
-import React, { useState } from 'react';
-import {View,Text,Button,TextInput,Image,StyleSheet,TouchableOpacity} from 'react-native';
+import React, { useState,useEffect } from 'react';
+import {View,Text,Button,TextInput,Image,StyleSheet,TouchableOpacity,CheckBox} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from "@react-navigation/native";
 import Auth from '../utils/auth';
 
 function Login({navigation}) {
+    const isFocused = useIsFocused()
     const [user,setUser] = useState({
         name:'',
         email:'',
         password:''
     })
-    
+    const [isSelected,setSelection] = useState(false)
     const [loginOrRegister,setLoginOrRegister] = useState('login')
     const [errorMessage,setErrorMessage] = useState('')
 
+    const saveSelected = async() => {
+        if (isSelected){
+            await AsyncStorage.setItem('selected', true);
+        }else{
+            await AsyncStorage.removeItem('selected');
+        }
+    }
+
+    const saveLogin = async () => {
+        if (isSelected){
+            await AsyncStorage.setItem('loginInfo', JSON.stringify(user));
+
+        }
+    }
+    const removeLogin = async () => {
+        await AsyncStorage.removeItem('loginInfo');
+
+    }
+
+    const loadLogin = async () => {
+        const selected = await AsyncStorage.getItem('selected')||''
+        console.log(selected,typeof selected,'load')
+        if (selected===''){
+            removeLogin()
+            return
+        }
+        const userData = await AsyncStorage.getItem('loginInfo')||''
+        if (userData){
+            console.log(userData)
+            setUser(JSON.parse(userData))
+            setSelection(true)
+        }
+        
+        
+
+    }
+    // useEffect(()=>{
+    //     if (isSelected){
+    //         saveLogin()
+    //     }
+    // },[user])
+    // useEffect(()=>{
+    //     loadLogin()
+    // },[isFocused])
+    // useEffect(()=>{
+    //     saveSelected()
+    //     saveLogin()
+    // },[isSelected])
     const changeLogin = (path)=>{
         setLoginOrRegister(path)
         setErrorMessage('')
@@ -58,7 +109,20 @@ function Login({navigation}) {
         })
     }
 
-    
+    // const handleInput = ({email,password}) => {
+    //     console.log(email,password,'test')
+    //     if (email || email===''){
+    //         setUser({...user,email:email})
+    //     }
+    //     if (password || password ==='') {
+    //         setUser({...user,password:password})
+    //     }
+        // if (isSelected){
+        //     console.log(user)
+        //     saveLogin()
+
+        // }
+    // }
     const login = (e) => {
         e.preventDefault();
         if (user.email===''||user.password===''){
@@ -93,9 +157,9 @@ function Login({navigation}) {
                     
                         <View style={styles.inputContainer}>
                           
-                            <TextInput style={styles.input} name="email" type="email" value={user.email} onChangeText={(text)=>setUser({...user,email:text})} placeholder="Enter Email" required></TextInput>
+                            <TextInput style={styles.input} name="email" type="email" value={user.email} onChangeText={(text)=>setUser({...user,email:text})} placeholder="Enter Email" required autoComplete='email'></TextInput>
                             
-                            <TextInput style={styles.input} name="password" type="password" value={user.password} onChangeText={(text)=>setUser({...user,password:text})} placeholder="Enter Password" required></TextInput>
+                            <TextInput style={styles.input} name="password" type="password" value={user.password} onChangeText={(text)=>setUser({...user,password:text})} placeholder="Enter Password" required secureTextEntry autoComplete='password'></TextInput>
                         </View>
                         <TouchableOpacity style={styles.button} onPress={login}>
                             <Text style={styles.text}>Login</Text>
@@ -124,7 +188,7 @@ function Login({navigation}) {
                     <Text>{errorMessage}</Text>
                 </>
                 }
-               
+                {/* <CheckBox value={isSelected} onValueChange={setSelection}><Text>Save info</Text></CheckBox> */}
           
         </View>
         </>

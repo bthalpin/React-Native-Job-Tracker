@@ -3,8 +3,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 class AuthService {
-  getProfile() {
-    return decode(this.getToken());
+  async getProfile() {
+    console.log('before')
+    const token = await this.getToken()
+    console.log(token)
+    const profile =await decode(token);
+    console.log(profile)
+    return profile
   }
 
   loggedIn() {
@@ -27,9 +32,10 @@ class AuthService {
   }
 
   async getToken() {
+    console.log('gettingtoken')
     const token = await AsyncStorage.getItem('id_token')||'';
-    const tokens = await token
-    return tokens
+    console.log(token,'token')
+    return token
   }
 
   async login(idToken) {
@@ -39,6 +45,7 @@ class AuthService {
 
   async logout() {
     await AsyncStorage.removeItem('id_token');
+
   }
 }
 

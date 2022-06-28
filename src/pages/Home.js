@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {ScrollView,View,Text,Button,TextInput,Image,StyleSheet,TouchableOpacity} from 'react-native';
-
+import { useIsFocused } from "@react-navigation/native";
 // import {Link} from 'react-router-dom';
 // import {ConfirmModal,CompanyForm} from '../../components/';
 import Auth from '../utils/auth';
 
-function Home() {
+function Home({navigation}) {
+    const isFocused = useIsFocused()
     // const token = await Auth.getToken();
     const [show,setShow] = useState('')
     const [add,setAdd] = useState(false)
@@ -25,7 +26,7 @@ function Home() {
     }
     useEffect(() => {
         loadCompanies();
-      }, []);
+      }, [isFocused]);
     
     const getCompanies = (token) => {
         console.log(token)
@@ -69,32 +70,32 @@ function Home() {
         setShow('show')
     };
     return (
-        <View className="page">    
-            <TextInput name="search" className="search" placeholder="Filter Your Companies" value={search} onChange={(e)=>setSearch(e.target.value)}></TextInput>
-            <Button className="clearSearch" onClick={()=>setSearch('')}>Clear</Button>
+        <View >    
+            <TextInput name="search"  placeholder="Filter Your Companies" value={search} onChangeText={(value)=>setSearch(value)}></TextInput>
+            <Button  onPress={()=>setSearch('')} title='Clear'/>
 
             {allCompanies.length?<></>
             :<View>
-                <Text><span className="welcome">Welcome to JobTracker!</span> To begin, start by adding a company that you are applying to.  Once the company is created you can then add inViewidual jobs and mark the jobs once you apply, get an offer, or are rejected.</Text>
+                <Text><span >Welcome to JobTracker!</span> To begin, start by adding a company that you are applying to.  Once the company is created you can then add inViewidual jobs and mark the jobs once you apply, get an offer, or are rejected.</Text>
             </View>}
 
             {add?
-                <View className="addCompanyContainer" >
+                <View  >
                    
                 </View>
             :
-                <View className="addContainer">
-                    <Button className="addCompany" onClick={()=>setAdd(true)}>Add Company</Button>
+                <View>
+                    <Button  onPress={()=>navigation.navigate('AddCompany')} title='Add Company'/>
                 </View>
             }
-            <ScrollView className="homeContainer" >
+            <ScrollView  >
                 {allCompanies.filter(company=>company.name.toUpperCase().includes(search.toUpperCase())).map((company,index)=>{
                     return (
-                        <View className="homeCard" key={index}>
-                        
+                        <View  key={index}>
+                            {/* {console.log(company._id)} */}
                          
-                                <View className="cardContent">
-                                    <View className="imageContainer">
+                                <TouchableOpacity onPress={()=>navigation.navigate('Company',{companyId:company._id})} >
+                                    <View >
                                         <Image src={company.logo||'/images/default.png'} alt="Company logo"></Image>
                                     </View>
                                     <View>
@@ -102,7 +103,7 @@ function Home() {
                                         <Text>{company.jobs.length} {company.jobs.length===1?'Job':'Jobs'} - Applied {company.jobs.filter(job=>job.status!=='created').length}</Text>
                                     </View>
 
-                                </View>
+                                </TouchableOpacity >
                            
                         </View>
                     )
