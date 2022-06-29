@@ -86,30 +86,34 @@ function Home({navigation}) {
             :
                 <View>
                     <Button  onPress={()=>navigation.navigate('AddCompany')} title='Add Company'/>
+                    <Button  onPress={()=>navigation.navigate('AllJobs')} title='View All Jobs'/>
                 </View>
             }
-            <ScrollView  >
-                {allCompanies.filter(company=>company.name.toUpperCase().includes(search.toUpperCase())).map((company,index)=>{
-                    return (
-                        <View  key={index}>
-                            {/* {console.log(company._id)} */}
-                         
-                                <TouchableOpacity onPress={()=>navigation.navigate('Company',{companyId:company._id})} >
-                                    <View >
-                                        <Image src={company.logo||'/images/default.png'} alt="Company logo"></Image>
-                                    </View>
-                                    <View>
-                                        <Text>{company.name}</Text>
-                                        <Text>{company.jobs.length} {company.jobs.length===1?'Job':'Jobs'} - Applied {company.jobs.filter(job=>job.status!=='created').length}</Text>
-                                    </View>
+            <View>
 
-                                </TouchableOpacity >
-                           
-                        </View>
-                    )
-                })}
+                <ScrollView  showsVerticalScrollIndicator={false}>
+                    {allCompanies.filter(company=>company.name.toUpperCase().includes(search.toUpperCase())).map((company,index)=>{
+                        return (
+                            <View  key={index}>
+                                {/* {console.log(company._id)} */}
+                            
+                                    <TouchableOpacity onPress={()=>navigation.navigate('Company',{companyId:company._id})} >
+                                        <View >
+                                            <Image src={company.logo||'/images/default.png'} alt="Company logo"></Image>
+                                        </View>
+                                        <View>
+                                            <Text>{company.name}</Text>
+                                            <Text>{company.jobs.length} {company.jobs.length===1?'Job':'Jobs'} - Applied {company.jobs.filter(job=>job.status!=='created').length}</Text>
+                                        </View>
 
-            </ScrollView>
+                                    </TouchableOpacity >
+                            
+                            </View>
+                        )
+                    })}
+
+                </ScrollView>
+            </View>
         </View>
   );
 }

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View,Text,Button,Image } from 'react-native';
 import {Confirm} from './'
-
+import { useIsFocused } from "@react-navigation/native";
 import Auth from '../utils/auth';
+import { TouchableOpacity } from 'react-native-web';
 
 export default function Company({route,navigation}) {
-
+    const isFocused = useIsFocused()
     const {companyId,action} = route.params;
     console.log(action)
     const [token,setToken] = useState('')
@@ -32,7 +33,7 @@ export default function Company({route,navigation}) {
     }
     useEffect(() => {
         loadPage()
-        }, []);
+        }, [isFocused]);
     
     const getCompany = (token) => {
         let companyURL = `http://localhost:3001/api/company/${companyId}`;
@@ -128,11 +129,14 @@ export default function Company({route,navigation}) {
                                 
                     {allJobs.filter(job=>job.title.toUpperCase().includes(jobSearch.toUpperCase())&&job.status!==hideArchived).map((job,index)=>{
                         return (
-                            <View to={`/jobs/${companyId}/${job._id}`} className={`companyCard ${job.status}`} key={index}>
+                            <TouchableOpacity onPress={()=>navigation.navigate('SelectedJob',{
+                                companyId:companyId,
+                                jobId:job._id
+                            })} key={index}>
                                 <Text className="jobTitle">{job.title}</Text>
                                 <Text>{job.contactInfo}</Text>
                                 {job.createdAt?<Text>Created on {job.date}</Text>:<></>}
-                            </View>
+                            </TouchableOpacity>
                     )
                     })}
 
