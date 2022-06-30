@@ -94,10 +94,10 @@ function Home({navigation}) {
                 <ScrollView  showsVerticalScrollIndicator={false}>
                     {allCompanies.filter(company=>company.name.toUpperCase().includes(search.toUpperCase())).map((company,index)=>{
                         return (
-                            <View  key={index}>
+                            <View   key={index}>
                                 {/* {console.log(company._id)} */}
                             
-                                    <TouchableOpacity onPress={()=>navigation.navigate('Company',{companyId:company._id})} >
+                                    <TouchableOpacity style={styles.card} onPress={()=>navigation.navigate('Company',{companyId:company._id})} >
                                         <View >
                                             <Image src={company.logo||'/images/default.png'} alt="Company logo"></Image>
                                         </View>
@@ -115,7 +115,31 @@ function Home({navigation}) {
                 </ScrollView>
             </View>
         </View>
-  );
-}
+  );}
+  const styles = StyleSheet.create({
+    navigation:{
+      backgroundColor:'#2F5061'
+    },
+    container: {
+      flex: 1,
+      // backgroundColor: '#2b2b2b',
+      // alignItems: 'center',
+      // justifyContent: 'center',
+    },
+    card:{
+        marginBottom:10,
+        padding:20,
+        justifyContent:'center',
+        alignItems:'center',
+        borderColor:'black',
+        borderTopWidth:1,
+        borderBottomWidth:1,
+        shadowColor:'black',
+        shadowOffset:{width:0,height:4},
+        shadowRadius:3,
+        shadowOpacity:0.2
+    }
+})
+
 
 export default Home;

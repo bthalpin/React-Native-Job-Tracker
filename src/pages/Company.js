@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View,Text,Button,Image } from 'react-native';
-import {Confirm} from './'
+import Confirm from '../components/Confirm'
 import { useIsFocused } from "@react-navigation/native";
 import Auth from '../utils/auth';
 import { TouchableOpacity } from 'react-native-web';
@@ -8,7 +8,7 @@ import { TouchableOpacity } from 'react-native-web';
 export default function Company({route,navigation}) {
     const isFocused = useIsFocused()
     const {companyId,action} = route.params;
-    console.log(action)
+    // console.log(action)
     const [token,setToken] = useState('')
     const [show,setShow] = useState('')
     const [confirm,setConfirm] = useState(false)
@@ -94,7 +94,7 @@ export default function Company({route,navigation}) {
     return (
         <View>
             {confirm?
-                <Confirm action={deleteCompany} cancel={setConfirm}/>
+                <Confirm action={deleteCompany} cancel={setConfirm} name={company.name}/>
             :
                 <View className="companyContainer">
                     <Text>{company.name}</Text>
@@ -107,14 +107,14 @@ export default function Company({route,navigation}) {
                     </Text>
                     <Text href={company.website}>{company.name}</Text>
                     <View className="companyBtnContainer">
-                        <Button className="companyEdit" onPress={()=>setEdit(true)} title='Edit'>Edit</Button>
+                        <Button className="companyEdit" onPress={()=>navigation.navigate('EditCompany',{company:company})} title='Edit'>Edit</Button>
                         <Button className="delete" onPress={()=>setConfirm(true)} title='Delete'>Delete</Button>
                     </View>
                 </View>
             }
             <View className="addJobContainer">
 
-                <Button className="addJobBtn" to={`/company/add/${companyId}`} title='Add Job' >Add Job</Button>
+                <Button className="addJobBtn"  title='Add Job' onPress={()=>navigation.navigate('AddJob',{companyId:company._id})} >Add Job</Button>
             </View>
             {company?.jobs?.length?
                 <>

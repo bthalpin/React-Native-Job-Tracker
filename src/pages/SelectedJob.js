@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {ScrollView,View,Text,Button,TextInput,Image,StyleSheet,TouchableOpacity} from 'react-native';
-
+import Confirm from '../components/Confirm'
+import { useIsFocused } from "@react-navigation/native";
 // import {ConfirmModal,JobForm,JobPostData} from '../../components/';
 import Auth from '../utils/auth';
 
 function SelectedJob({route,navigation}) {
+    const isFocused = useIsFocused()
     const {companyId,jobId} = route.params;
-
+    const [confirm, setConfirm] = useState(false)
     const [show,setShow] = useState('')
     const [job,setJob ] = useState()
     const [jobData,setJobData] = useState({})
@@ -42,13 +44,13 @@ function SelectedJob({route,navigation}) {
     },[jobData])
     useEffect(() => {
         loadPage();
-      }, []);
+      }, [isFocused]);
     useEffect(() => {
         if (token){
           getJob();
 
         }
-      }, [token]);
+      }, [token,isFocused]);
     useEffect(()=>{
         if(newJob.title){
         let jobURL = `http://localhost:3001/api/jobs/${companyId}/${jobId}`;
@@ -127,11 +129,10 @@ function SelectedJob({route,navigation}) {
     return (
         <View className={`${job?.status}job jobPage`} >
             <View className={`jobContainer`}>
-                {edit
+                {confirm
                 ?
                     <>  
-                        {/* <JobForm newJob={newJob} setNewJob={setNewJob} handleSubmit={handleSubmit} setEdit={setEdit} ButtonName='Save' /> */}
-
+                        <Confirm action={deleteJob} cancel={setConfirm} name={job.title}/>
                         
                     </>
                 :
@@ -177,8 +178,8 @@ function SelectedJob({route,navigation}) {
                         </select> */}
 
                         <View className="jobButtonContainer">
-                            <Button className="jobButton deleteJob" onPress={()=>deleteJob()}>Delete</Button>
-                            <Button className="jobButton" onPress={()=>setEdit(true)}>Edit</Button>
+                            <Button className="jobButton deleteJob"  onPress={()=>setConfirm(true)} title='Delete'>Delete</Button>
+                            <Button className="jobButton" onPress={()=>navigation.navigate('EditJob',{job:job})} title='Edit'>Edit</Button>
                         </View>
                 
                     </>
