@@ -1,4 +1,5 @@
 import React, {useState,useEffect} from 'react';
+import {View,StyleSheet} from 'react-native';
 import JobForm from '../components/JobForm';
 import Auth from '../utils/auth';
 
@@ -25,7 +26,7 @@ function AddJob({navigation,route}) {
     const addJob = async () =>{
         const user = await Auth.getProfile()
         const userId = user.data._id
-        fetch(`http://localhost:3001/api/jobs/${companyId}`,{
+        fetch(`https://job-tracker-bh.herokuapp.com/api/jobs/${companyId}`,{
             method:'POST',
             headers:{
                 'Content-Type': 'application/json'
@@ -53,14 +54,19 @@ function AddJob({navigation,route}) {
         addJob()
       };
   return (
-    <div className="AddJobContainer" >
-        <JobForm newJob={newJob} setNewJob={setNewJob} handleSubmit={handleSubmit} buttonName='Add' />
+        <View style={styles.container} >
+        <JobForm newJob={newJob} setNewJob={setNewJob} handleSubmit={handleSubmit} buttonName='Add' navigation={navigation}/>
         {/* <JobPostData setJobData={setJobData}/> */}
        
         {/* <Confirm show={show} setShow={setShow} callBack={addJob} action="create" name={newJob.title} type="job"/> */}
 
-    </div>
+    </View>
   );
 }
 
+const styles = StyleSheet.create({
+    container:{
+        flex:1
+    }
+})
 export default AddJob;

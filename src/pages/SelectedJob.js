@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {ScrollView,View,Text,Button,TextInput,Image,StyleSheet,TouchableOpacity} from 'react-native';
+import {ScrollView,View,Text,Button,TextInput,Image,StyleSheet,Linking} from 'react-native';
+import MyButton from '../components/MyButton';
 import Confirm from '../components/Confirm'
 import { useIsFocused } from "@react-navigation/native";
 // import {ConfirmModal,JobForm,JobPostData} from '../../components/';
@@ -53,7 +54,7 @@ function SelectedJob({route,navigation}) {
       }, [token,isFocused]);
     useEffect(()=>{
         if(newJob.title){
-        let jobURL = `http://localhost:3001/api/jobs/${companyId}/${jobId}`;
+        let jobURL = `https://job-tracker-bh.herokuapp.com/api/jobs/${companyId}/${jobId}`;
         fetch(jobURL,{
             method:'PUT',
             headers:{
@@ -71,7 +72,7 @@ function SelectedJob({route,navigation}) {
     
     const getJob = () => {
       console.log(token,'token')
-        let jobURL = `http://localhost:3001/api/jobs/${companyId}/${jobId}`;
+        let jobURL = `https://job-tracker-bh.herokuapp.com/api/jobs/${companyId}/${jobId}`;
         console.log('here')
         fetch(jobURL,{
             headers:{
@@ -86,7 +87,7 @@ function SelectedJob({route,navigation}) {
     };
     
     const deleteJob = () => {
-        let jobURL = `http://localhost:3001/api/jobs/${companyId}/${jobId}`;
+        let jobURL = `https://job-tracker-bh.herokuapp.com/api/jobs/${companyId}/${jobId}`;
         
         fetch(jobURL,{
             headers:{
@@ -106,7 +107,7 @@ function SelectedJob({route,navigation}) {
     }
 
     const editJob = (updatedData) => {
-        let jobURL = `http://localhost:3001/api/jobs/${companyId}/${jobId}`;
+        let jobURL = `https://job-tracker-bh.herokuapp.com/api/jobs/${companyId}/${jobId}`;
         
         fetch(jobURL,{
             method:'PUT',
@@ -127,8 +128,8 @@ function SelectedJob({route,navigation}) {
         editJob()
     }
     return (
-        <View className={`${job?.status}job jobPage`} >
-            <View className={`jobContainer`}>
+        <View style={styles.container} >
+            <ScrollView >
                 {confirm
                 ?
                     <>  
@@ -137,13 +138,15 @@ function SelectedJob({route,navigation}) {
                     </>
                 :
                     <>
-                        <Text>{job?.title}</Text>
-                        <Text>{job?.contactInfo}</Text>
+                        <Text style={styles.title}>{job?.title}</Text>
+                        <Text style={styles.text}>{job?.contactInfo}</Text>
                
                         {/* <View>
                             <Link to={`/company/${job?.company?._id}`}>{job?.company?.name}</Link>
                         </View> */}
-                        {/* <a href={job?.link}>{job?.title} - Job Post</a> */}
+                        {job?.link?
+                        <Text style={styles.text} onPress={()=>Linking.openURL(job.link)}>{job?.title} - Job Post</Text>
+                        :<></>}
                         <View className="resumeContainer">
                             {/* {job?.resumeLink?
                                 <a href={job.resumeLink}>Resume</a>
@@ -154,16 +157,16 @@ function SelectedJob({route,navigation}) {
 
                         </View>
                         {job?.description?
-                            <>
+                            <View style={styles.section}>
                                 <Text>Description:</Text>
                                 <Text className="description">{job.description}</Text>
-                            </>
+                            </View>
                         :<></>}
                         {job?.notes?
-                            <>
+                            <View style={styles.section}>
                                 <Text>Notes:</Text>
                                 <Text className="notes">{job?.notes}</Text>
-                            </>
+                            </View>
                         :<></>}
                 
                         {/* <JobPostData setJobData={setJobData} /> */}
@@ -177,19 +180,107 @@ function SelectedJob({route,navigation}) {
                             <option value="archived">Archive</option>
                         </select> */}
 
-                        <View className="jobButtonContainer">
-                            <Button className="jobButton deleteJob"  onPress={()=>setConfirm(true)} title='Delete'>Delete</Button>
-                            <Button className="jobButton" onPress={()=>navigation.navigate('EditJob',{job:job})} title='Edit'>Edit</Button>
+                        <View style={styles.buttons}>
+                            <MyButton color='#f56f76' action={()=>setConfirm(true)} text='Delete'/>
+                            <MyButton color='#f56f76' action={()=>navigation.navigate('EditJob',{job:job})} text='Edit'/>
                         </View>
                 
                     </>
             
                 }
                 {/* <ConfirmModal show={show} setShow={setShow} callBack={deleteJob} action="delete" name={newJob.title} type="job"/> */}
-            </View>
+            </ScrollView>
 
         </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container:{
+      flex:1,
+      padding:5,
+      // justifyContent:'center',
+      backgroundColor:'#f0efef',
+
+  },
+  section:{
+    borderWidth:1,
+    borderColor:'#4297A0',
+    padding:5,
+  },
+  company:{
+      flex:4,
+      borderWidth:1,
+      borderColor:'#4297A0',
+      padding:5,
+      justifyContent:'center',
+      maxHeight:'50%'
+  },
+  buttons:{
+      flex:1,
+      flexDirection:'row',
+      flexWrap:'wrap',
+      justifyContent:'space-between',
+      // maxHeight:50,
+      padding:10
+      // marginTop:10
+  },
+  name:{
+      textAlign:'center'
+  },
+  image:{
+      width:100,
+      height:100,
+      resizeMode:'contain',
+      margin:'auto'
+  },
+  title:{
+    textAlign:'center',
+    fontSize:16,
+    fontWeight:'bold',
+    padding:10
+
+  },
+  text:{
+      textAlign:'center',
+      paddingBottom:10
+
+  },
+  search:{
+      flex:1,
+      flexDirection:'row',
+      flexWrap:'wrap',
+      alignItems:'center'
+  },
+  input:{
+      backgroundColor:'white',
+      borderWidth:1,
+      borderColor:'#4297A0',
+      padding:10
+  },
+  cardContainer:{
+      flex:4,
+      flexDirection:'row',
+      justifyContent:'space-between',
+      flexWrap:'wrap',
+      // width:'100%'
+  },
+  card:{
+      marginBottom:10,
+      padding:10,
+      justifyContent:'center',
+      alignItems:'center',
+      borderColor:'#4297A0',
+      borderWidth:1,
+      width:'49%',
+      maxHeight:100
+      // borderBottomWidth:1,
+      // shadowColor:'black',
+      // shadowOffset:{width:0,height:4},
+      // shadowRadius:3,
+      // shadowOpacity:0.2
+  },
+
+})
 
 export default SelectedJob;

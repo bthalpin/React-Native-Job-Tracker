@@ -31,7 +31,7 @@ function Home({navigation}) {
     
     const getCompanies = (token) => {
         console.log(token)
-        let companyURL = `http://localhost:3001/api/company/`;
+        let companyURL = `https://job-tracker-bh.herokuapp.com/api/company/`;
         
         fetch(companyURL,{
             headers:{
@@ -43,7 +43,7 @@ function Home({navigation}) {
     };
   
     const addCompany = () => {
-        fetch('http://localhost:3001/api/company',{
+        fetch('https://job-tracker-bh.herokuapp.com/api/company',{
             method:'POST',
             headers:{
                 'Content-Type': 'application/json'
@@ -71,31 +71,31 @@ function Home({navigation}) {
         setShow('show')
     };
     return (
-        <View >    
-            <View style={styles.container}>
+        <View style={styles.container}>    
+            <View style={styles.buttonContainer}>
                 <TextInput style={styles.searchInput} name="search"  placeholder="Filter Your Companies" value={search} onChangeText={(value)=>setSearch(value)}></TextInput>
                 <MyButton color="#7b839c" action={()=>setSearch('')} text='Clear'/>
 
             </View>
 
             {allCompanies.length?<></>
-            :<View>
+            :<View style={styles.welcome}>
                 <Text>Welcome to JobTracker! To begin, start by adding a company that you are applying to.  Once the company is created you can then add inViewidual jobs and mark the jobs once you apply, get an offer, or are rejected.</Text>
             </View>}
 
-            {add?
+            {/* {add?
                 <View  >
                    
                 </View>
-            :
-                <View style={styles.container}>
+            : */}
+                <View style={styles.buttonContainer}>
                     <MyButton width="40%" color='#f56f76' action={()=>navigation.navigate('AddCompany')} text='Add Company'/>
                     <MyButton  width="40%" color='#f56f76' action={()=>navigation.navigate('AllJobs')} text='View All Jobs'/>
                 </View>
-            }
-            <View>
+            {/* } */}
+            <View style={styles.companyContainer}>
 
-                <View style={styles.container} showsVerticalScrollIndicator={false}>
+                <ScrollView contentContainerStyle={styles.companies}>
                     {allCompanies.filter(company=>company.name.toUpperCase().includes(search.toUpperCase())).map((company,index)=>{
                         return (
                             <View  style={styles.cardContainer}  key={index}>
@@ -116,14 +116,30 @@ function Home({navigation}) {
                         )
                     })}
 
-                </View>
+                </ScrollView>
             </View>
         </View>
   );}
   const styles = StyleSheet.create({
-    navigation:{
-      backgroundColor:'#2F5061'
+    container:{
+      flex:1,
+      padding:2
     },
+    companyContainer:{
+        flex:4,
+        minHeight:80
+    },
+    companies:{
+        flexGrow:1,
+        flexWrap:'wrap',
+        flexDirection:'row',
+        justifyContent:'space-between'
+    },
+    welcome:{
+        textAlign:'center',
+        flex:1,
+        padding:10
+    },  
     searchContainer:{
         flex:1,
         flexWrap:'wrap',
@@ -139,11 +155,12 @@ function Home({navigation}) {
         flex:0.5,
         width:'25%'
     },
-    container: {
+    buttonContainer: {
       flex: 1,
       flexDirection:'row',
       flexWrap:'wrap',
       paddingTop:5,
+      height:10,
       backgroundColor: '#f0efef',
     //   alignItems: 'flex-start',
       justifyContent: 'space-between',

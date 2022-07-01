@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View,Text,TextInput,Image,StyleSheet,Linking } from 'react-native';
+import { View,Text,TextInput,Image,StyleSheet,Linking,ScrollView,TouchableOpacity} from 'react-native';
 import Confirm from '../components/Confirm'
 import MyButton from '../components/MyButton';
 import { useIsFocused } from "@react-navigation/native";
 import Auth from '../utils/auth';
-import { TouchableOpacity } from 'react-native-web';
+// import { TouchableOpacity } from 'react-native-web';
 
 export default function Company({route,navigation}) {
     const isFocused = useIsFocused()
@@ -37,7 +37,7 @@ export default function Company({route,navigation}) {
         }, [isFocused]);
     
     const getCompany = (token) => {
-        let companyURL = `http://localhost:3001/api/company/${companyId}`;
+        let companyURL = `https://job-tracker-bh.herokuapp.com/api/company/${companyId}`;
         
         fetch(companyURL,{
             headers:{
@@ -50,7 +50,7 @@ export default function Company({route,navigation}) {
                 setCompany(response)});
         };
     const getJobs = (token) => {
-        let jobURL = `http://localhost:3001/api/jobs/${companyId}`;
+        let jobURL = `https://job-tracker-bh.herokuapp.com/api/jobs/${companyId}`;
         
         fetch(jobURL,{
             headers:{
@@ -61,7 +61,7 @@ export default function Company({route,navigation}) {
             .then((response) => setAllJobs(response));
         };
     const deleteCompany = () => {
-        let companyURL = `http://localhost:3001/api/company/${companyId}`;
+        let companyURL = `https://job-tracker-bh.herokuapp.com/api/company/${companyId}`;
         
         fetch(companyURL,{
             headers:{
@@ -77,7 +77,7 @@ export default function Company({route,navigation}) {
         if (!newCompany.name){
             return
         }
-        fetch(`http://localhost:3001/api/company/${companyId}`,{
+        fetch(`https://job-tracker-bh.herokuapp.com/api/company/${companyId}`,{
             method:'PUT',
             headers:{
                 'Content-Type': 'application/json'
@@ -117,11 +117,13 @@ export default function Company({route,navigation}) {
 
                 <MyButton color='#f56f76'  text='Add Job' action={()=>navigation.navigate('AddJob',{companyId:company._id})} />
             </View>
+            <View style={styles.jobContainer}>
+
             {company?.jobs?.length?
                 <>
                 <View style={styles.search}>
                     {hideArchived?
-                        <MyButton width='33%' color="#7b839c" action={()=>setHideArchived('')} text='View Archived' />
+                        <MyButton font={10} width='33%' color="#7b839c" action={()=>setHideArchived('')} text='View Archived' />
                         :
                         <MyButton width='33%' color="#7b839c" action={()=>setHideArchived('archived')} text='Hide Archived' />
                     }
@@ -129,27 +131,35 @@ export default function Company({route,navigation}) {
                     <MyButton width='17%' color='#7b839c' action={()=>setJobSearch('')} text='Clear' />
 
                 </View>
-                <View style={styles.cardContainer} >
+
+            <View style={styles.jobContainer}>
+
+                <ScrollView contentContainerStyle={styles.jobs} >
                                 
                     {allJobs.filter(job=>job.title.toUpperCase().includes(jobSearch.toUpperCase())&&job.status!==hideArchived).map((job,index)=>{
                         return (
-                            <TouchableOpacity style={styles.card} onPress={()=>navigation.navigate('SelectedJob',{
+                            
+
+                            <TouchableOpacity key={index} style={styles.card} onPress={()=>navigation.navigate('SelectedJob',{
                                 companyId:companyId,
                                 jobId:job._id
-                            })} key={index}>
+                            })}>
                                 <Text className="jobTitle">{job.title}</Text>
                                 <Text>{job.contactInfo}</Text>
                                 {job.createdAt?<Text>Created on {job.date}</Text>:<></>}
                             </TouchableOpacity>
+                           
                     )
                     })}
+                </ScrollView>
+</View>
 
-                </View>
                 </>
             :
                 <View>
                     <Text className="noJobs">You currently do not have any jobs for {company.name}, press the add job Button to track your first job.</Text>
                 </View>}
+            </View>
             {/* <ConfirmModal show={show} setShow={setShow} callBack={deleteCompany} action="delete" name={company.name} type="company"/> */}
 
         </View>
@@ -158,11 +168,11 @@ export default function Company({route,navigation}) {
 
 const styles = StyleSheet.create({
     container:{
-        // marginTop:10,
         flex:1,
         padding:5,
-        justifyContent:'center',
-        backgroundColor:'#f0efef'
+        // justifyContent:'center',
+        backgroundColor:'#f0efef',
+
     },
     company:{
         flex:4,
@@ -176,13 +186,27 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection:'row',
         flexWrap:'wrap',
-        justifyContent:'space-between',
-        // marginTop:10
+        justifyContent:'center',
+        maxHeight:50,
+        marginTop:10
+    },
+    jobContainer:{
+        marginTop:10,
+        flex:6,
+        flexWrap:'wrap'
+    },
+    jobs:{
+        flexGrow:1,
+        flexWrap:'wrap',
+        flexDirection:'row',
+        justifyContent:'space-between'
     },
     name:{
         textAlign:'center'
     },
     image:{
+        flex:1,
+        alignSelf:'center',
         width:100,
         height:100,
         resizeMode:'contain',
@@ -192,16 +216,19 @@ const styles = StyleSheet.create({
         textAlign:'center'
     },
     search:{
-        flex:1,
+        // flex:1.5,
         flexDirection:'row',
         flexWrap:'wrap',
+        // height:20,
         alignItems:'center'
     },
     input:{
+        flex:1,
+        flexDirection:'row',
         backgroundColor:'white',
         borderWidth:1,
         borderColor:'#4297A0',
-        padding:10
+        padding:5
     },
     cardContainer:{
         flex:4,
@@ -217,7 +244,8 @@ const styles = StyleSheet.create({
         alignItems:'center',
         borderColor:'#4297A0',
         borderWidth:1,
-        width:'49%'
+        width:'49%',
+        maxHeight:100
         // borderBottomWidth:1,
         // shadowColor:'black',
         // shadowOffset:{width:0,height:4},

@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View,SafeAreaView, Button} from 'react-native';
+import { StyleSheet, Text, View,SafeAreaView, Button,TouchableOpacity} from 'react-native';
 import { NavigationContainer,DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {Home, Login,AllJobs,AddJob,Company,SelectedJob,AddCompany,EditCompany,EditJob} from './src/pages';
 import Auth from './src/utils/auth';
-import { TouchableOpacity } from 'react-native-web';
+// import { TouchableOpacity } from 'react-native-web';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,13 +18,13 @@ const MyTheme = {
 export default function App() {
   const logout = async (navigation) => {
     await Auth.logout()
-    navigation.navigate('login')
+    navigation.navigate(' ')
   }
   return (
-      // <View style={styles.container}>
+      <View style={styles.container}>
         <NavigationContainer theme={MyTheme}>
           <Stack.Navigator >
-            <Stack.Screen name='Login' component = {Login} />
+            <Stack.Screen name=' ' component = {Login} />
             <Stack.Screen name='Home' component = {Home} options={({navigation,route})=>({headerLeft:()=>(<></>),headerRight:()=>(<TouchableOpacity style={styles.logout} onPress={()=>logout(navigation)}><Text style={styles.logoutText}>Logout</Text></TouchableOpacity>)})} />
             
             
@@ -38,9 +38,8 @@ export default function App() {
             {/* <Stack.Screen name='Confirm' component = {Confirm}  /> */}
           </Stack.Navigator>
         </NavigationContainer>
-        // {/* <View style={styles.footer}><Text style={styles.logoutText}>Test</Text></View> */}
 
-      // {/* </View> */}
+      </View>
   );
 }
 
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: '#2b2b2b',
+    backgroundColor: '#f0efef',
     // alignItems: 'center',
     // justifyContent: 'center',
   },

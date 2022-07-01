@@ -1,7 +1,9 @@
 import React, { useState,useEffect } from 'react';
-import {View,Text,Button,TextInput,Image,StyleSheet,TouchableOpacity,CheckBox} from 'react-native';
+import {View,Text,TextInput,Image,StyleSheet,CheckBox} from 'react-native';
+import MyButton from '../components/MyButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from "@react-navigation/native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Auth from '../utils/auth';
 
 function Login({navigation}) {
@@ -95,7 +97,7 @@ function Login({navigation}) {
             setErrorMessage('Password must be at least 8 characters')
             return
         }
-        fetch('http://localhost:3001/user',{
+        fetch('https://job-tracker-bh.herokuapp.com/user',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -138,7 +140,7 @@ function Login({navigation}) {
         if (user.email===''||user.password===''){
             return
         }
-        fetch('http://localhost:3001/user/login',{
+        fetch('https://job-tracker-bh.herokuapp.com/user/login',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -162,11 +164,11 @@ function Login({navigation}) {
     }
     return (
         <>
-        <View style={styles.container}>
+        {/* <View> */}
         
-                <Image style={styles.image} source={require("../images/logo512.png")} alt="JobTracker Logo"></Image>
                 {loginOrRegister==='login'?
-                <>
+                <KeyboardAwareScrollView  contentContainerStyle={styles.container}>
+                <Image style={styles.image} source={require("../images/logo512.png")} alt="JobTracker Logo"></Image>
                     
                         <View style={styles.inputContainer}>
                           
@@ -174,15 +176,20 @@ function Login({navigation}) {
                             
                             <TextInput style={styles.input} name="password" type="password" value={user.password} onChangeText={(text)=>setUser({...user,password:text})} placeholder="Enter Password" required secureTextEntry autoComplete='password'></TextInput>
                         </View>
-                        <TouchableOpacity style={styles.button} onPress={login}>
+                        <View style={styles.buttonContainer}>
+                            <MyButton width='100%' action={login} text='Login' />
+
+                        </View>
+                        {/* <TouchableOpacity style={styles.button} onPress={login}>
                             <Text style={styles.text}>Login</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     
                     <Text onPress={()=>changeLogin('register')}>Click to Register</Text>
                     <Text>{errorMessage}</Text>
-                </>
+                </KeyboardAwareScrollView>
                 :
-                <>
+                <KeyboardAwareScrollView  contentContainerStyle={styles.container}>
+                <Image style={styles.image} source={require("../images/logo512.png")} alt="JobTracker Logo"></Image>
                    
                         <View style={styles.inputContainer}>
                            
@@ -193,25 +200,29 @@ function Login({navigation}) {
                             <TextInput style={styles.input} name="password" type="password" value={user.password} onChangeText={(text)=>setUser({...user,password:text})} placeholder="Enter Password" required></TextInput>
                         
                         </View>
-                        <TouchableOpacity style={styles.button} onPress={register} >
+                        <View style={styles.buttonContainer}>
+                            <MyButton width='100%' action={register} text='Register' />
+
+                        </View>
+                        {/* <TouchableOpacity style={styles.button} onPress={register} >
                             <Text style={styles.text}>Register</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     
                     <Text onPress={()=>changeLogin('login')}>Return to Login</Text>
                     <Text>{errorMessage}</Text>
-                </>
+                </KeyboardAwareScrollView>
                 }
                 {/* <CheckBox value={isSelected} onValueChange={setSelection}><Text>Save info</Text></CheckBox> */}
           
-        </View>
+        {/* </View> */}
         </>
     );
   }
 
   const styles = StyleSheet.create({
     container:{
-        flex:1,
-        backgroundColor:'#f0efef',
+        // flex:1,
+        // backgroundColor:'#f0efef',
         // justifyContent:'center',
         alignItems:'center',
         paddingTop:50
@@ -228,17 +239,23 @@ function Login({navigation}) {
     input:{
         margin:3,
         width:300,
-
         backgroundColor:'white',
-        paddingLeft:5,
-        paddingRight:5
-    },
-    button:{
-        backgroundColor:'#f56f76',
+        borderWidth:1,
+        borderColor:'#4297A0',
         padding:10,
-        color:'white',
-        borderRadius:5,
-        margin:10
+        // backgroundColor:'white',
+        // paddingLeft:5,
+        // paddingRight:5
+    },
+    buttonContainer:{
+        // flex:1,
+        // flex:1,
+        // flexDirection:'column',
+        // backgroundColor:'#f56f76',
+        paddingBottom:20,
+        // color:'white',
+        // borderRadius:5,
+        // marginTop:0
     },
     text:{
         color:'white'

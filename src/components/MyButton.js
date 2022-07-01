@@ -1,9 +1,9 @@
 import {TouchableOpacity,Text,StyleSheet} from 'react-native';
 
-export default function MyButton({navigation,action,text,color,width}) {
+export default function MyButton({navigation,action,text,color,width,font}) {
     return (
         <TouchableOpacity style={styles(color,width).button} onPress={action}>
-            <Text style={styles().text}>
+            <Text style={styles(font).text}>
                 {text}
             </Text>
         </TouchableOpacity>
@@ -11,19 +11,19 @@ export default function MyButton({navigation,action,text,color,width}) {
     );
 }
 
-const styles = (color,width="25%") => StyleSheet.create({
+const styles = (color='#f56f76',width="25%",font=15) => StyleSheet.create({
    button:{
     width:width,
     // maxWidth:100,
     backgroundColor:color,
     borderRadius:5,
     padding:10,
-    margin:'auto',
-    justifyContent:'center',
+    margin:5,
+    // justifyContent:'center',
     alignItems:'center'
    },
    text:{
     color:'#fff',
-    fontSize:16
+    fontSize:font
 }
 })

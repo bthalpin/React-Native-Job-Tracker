@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text,TextInput,Button} from 'react-native';
+import {View, Text,TextInput,Button,StyleSheet} from 'react-native';
 import CompanyForm from '../components/CompanyForm';
 import Auth from '../utils/auth';
 
@@ -19,7 +19,7 @@ function EditCompany({route,navigation}) {
     // const addCompany = async () => {
     //     const userId = await Auth.getProfile()
     //     console.log(userId)
-    //     fetch('http://localhost:3001/api/company',{
+    //     fetch('https://job-tracker-bh.herokuapp.com/api/company',{
     //         method:'POST',
     //         headers:{
     //             'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ function EditCompany({route,navigation}) {
         if (!newCompany.name){
             return
         }
-        fetch(`http://localhost:3001/api/company/${newCompany._id}`,{
+        fetch(`https://job-tracker-bh.herokuapp.com/api/company/${newCompany._id}`,{
             method:'PUT',
             headers:{
                 'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ function EditCompany({route,navigation}) {
         })
       };
   return (
-    <View className="addCompanyContainer" >
+    <View style={styles.container} >
         <CompanyForm company={newCompany} setCompany={setNewCompany} handleSubmit={handleSubmit} action='Update' navigation={navigation} checkURL={checkURL} />
       
 {/*                 
@@ -89,5 +89,9 @@ function EditCompany({route,navigation}) {
     </View>
   );
 }
-
+const styles = StyleSheet.create({
+    container:{
+        flex:1
+    }
+})
 export default EditCompany;

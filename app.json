@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "React-Native-Job-Tracker",
-    "slug": "React-Native-Job-Tracker",
+    "name": "Job Tracker",
+    "slug": "Job-Tracker",
+    "description":"Keep your job opportunities organized with Job Tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,6 +22,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package":"com.halpin.jobtracker",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
