@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {ScrollView,View,Text,Button,TextInput,Image,StyleSheet,TouchableOpacity} from 'react-native';
 import { useIsFocused } from "@react-navigation/native";
+import MyButton from '../components/MyButton';
 // import {Link} from 'react-router-dom';
 // import {ConfirmModal,CompanyForm} from '../../components/';
 import Auth from '../utils/auth';
@@ -71,12 +72,15 @@ function Home({navigation}) {
     };
     return (
         <View >    
-            <TextInput name="search"  placeholder="Filter Your Companies" value={search} onChangeText={(value)=>setSearch(value)}></TextInput>
-            <Button  onPress={()=>setSearch('')} title='Clear'/>
+            <View style={styles.container}>
+                <TextInput style={styles.searchInput} name="search"  placeholder="Filter Your Companies" value={search} onChangeText={(value)=>setSearch(value)}></TextInput>
+                <MyButton color="#7b839c" action={()=>setSearch('')} text='Clear'/>
+
+            </View>
 
             {allCompanies.length?<></>
             :<View>
-                <Text><span >Welcome to JobTracker!</span> To begin, start by adding a company that you are applying to.  Once the company is created you can then add inViewidual jobs and mark the jobs once you apply, get an offer, or are rejected.</Text>
+                <Text>Welcome to JobTracker! To begin, start by adding a company that you are applying to.  Once the company is created you can then add inViewidual jobs and mark the jobs once you apply, get an offer, or are rejected.</Text>
             </View>}
 
             {add?
@@ -84,26 +88,26 @@ function Home({navigation}) {
                    
                 </View>
             :
-                <View>
-                    <Button  onPress={()=>navigation.navigate('AddCompany')} title='Add Company'/>
-                    <Button  onPress={()=>navigation.navigate('AllJobs')} title='View All Jobs'/>
+                <View style={styles.container}>
+                    <MyButton width="40%" color='#f56f76' action={()=>navigation.navigate('AddCompany')} text='Add Company'/>
+                    <MyButton  width="40%" color='#f56f76' action={()=>navigation.navigate('AllJobs')} text='View All Jobs'/>
                 </View>
             }
             <View>
 
-                <ScrollView  showsVerticalScrollIndicator={false}>
+                <View style={styles.container} showsVerticalScrollIndicator={false}>
                     {allCompanies.filter(company=>company.name.toUpperCase().includes(search.toUpperCase())).map((company,index)=>{
                         return (
-                            <View   key={index}>
+                            <View  style={styles.cardContainer}  key={index}>
                                 {/* {console.log(company._id)} */}
                             
                                     <TouchableOpacity style={styles.card} onPress={()=>navigation.navigate('Company',{companyId:company._id})} >
                                         <View >
-                                            <Image src={company.logo||'/images/default.png'} alt="Company logo"></Image>
+                                            <Image style={styles.image} source={company.logo?{uri:company.logo}:require('../images/logo512.png')} alt="Company logo"></Image>
                                         </View>
                                         <View>
-                                            <Text>{company.name}</Text>
-                                            <Text>{company.jobs.length} {company.jobs.length===1?'Job':'Jobs'} - Applied {company.jobs.filter(job=>job.status!=='created').length}</Text>
+                                            <Text style={styles.name}>{company.name}</Text>
+                                            <Text style={styles.jobs}>{company.jobs.length} {company.jobs.length===1?'Job':'Jobs'} - Applied {company.jobs.filter(job=>job.status!=='created').length}</Text>
                                         </View>
 
                                     </TouchableOpacity >
@@ -112,7 +116,7 @@ function Home({navigation}) {
                         )
                     })}
 
-                </ScrollView>
+                </View>
             </View>
         </View>
   );}
@@ -120,24 +124,60 @@ function Home({navigation}) {
     navigation:{
       backgroundColor:'#2F5061'
     },
+    searchContainer:{
+        flex:1,
+        flexWrap:'wrap',
+    },
+    searchInput:{
+        width:'72%',
+        backgroundColor:'white',
+        padding:10,
+        borderWidth:1,
+        borderColor:'#4297A0'
+    },
+    button:{
+        flex:0.5,
+        width:'25%'
+    },
     container: {
       flex: 1,
-      // backgroundColor: '#2b2b2b',
-      // alignItems: 'center',
-      // justifyContent: 'center',
+      flexDirection:'row',
+      flexWrap:'wrap',
+      paddingTop:5,
+      backgroundColor: '#f0efef',
+    //   alignItems: 'flex-start',
+      justifyContent: 'space-between',
+    },
+    cardContainer:{
+        width:'49%'
     },
     card:{
         marginBottom:10,
-        padding:20,
+        padding:10,
         justifyContent:'center',
         alignItems:'center',
-        borderColor:'black',
-        borderTopWidth:1,
-        borderBottomWidth:1,
-        shadowColor:'black',
-        shadowOffset:{width:0,height:4},
-        shadowRadius:3,
-        shadowOpacity:0.2
+        borderColor:'#4297A0',
+        borderWidth:1,
+        // borderBottomWidth:1,
+        // shadowColor:'black',
+        // shadowOffset:{width:0,height:4},
+        // shadowRadius:3,
+        // shadowOpacity:0.2
+    },
+    name:{
+        textAlign:'center',
+        fontSize:15
+    },
+    jobs:{
+        textAlign:'center',
+        fontSize:11
+
+    },
+    image:{
+        width:100,
+        height:80,
+        maxHeight:50,
+        resizeMode:'contain'
     }
 })
 

@@ -38,13 +38,13 @@ function EditCompany({route,navigation}) {
     //         navigation.navigate('Home')
     //     })
     // }
-    // const checkURL = (value) => {
-    //     const currentLength = value.length
-    //     if (!value.startsWith('http'.slice(0,currentLength))&&value!==''){
-    //         value = 'https://' + value;
-    //     }
-    //     setNewCompany({...newCompany,website:value})
-    // }
+    const checkURL = (value) => {
+        const currentLength = value.length
+        if (!value.startsWith('http'.slice(0,currentLength))&&value!==''){
+            value = 'https://' + value;
+        }
+        setNewCompany({...newCompany,website:value})
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!newCompany.name){
@@ -67,7 +67,7 @@ function EditCompany({route,navigation}) {
       };
   return (
     <View className="addCompanyContainer" >
-        <CompanyForm company={newCompany} setCompany={setNewCompany} handleSubmit={handleSubmit} action='Update' navigation={navigation} />
+        <CompanyForm company={newCompany} setCompany={setNewCompany} handleSubmit={handleSubmit} action='Update' navigation={navigation} checkURL={checkURL} />
       
 {/*                 
                 <TextInput type="text" name="company" placeholder="Company name" value={newCompany.name} onChangeText={(value)=>setNewCompany({...newCompany, name:value})}></TextInput>

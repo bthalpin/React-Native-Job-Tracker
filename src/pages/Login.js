@@ -134,6 +134,7 @@ function Login({navigation}) {
     // }
     const login = (e) => {
         e.preventDefault();
+        console.log('here')
         if (user.email===''||user.password===''){
             return
         }
@@ -144,14 +145,17 @@ function Login({navigation}) {
             },
             body:JSON.stringify({...user,email:user.email.toLowerCase()})
 
-        }).then(response=>response.json())
+        }).then(response=>{
+            console.log('sent')
+            return response.json()})
         .then(data=>{
-            
+            console.log('here')
             if (!data.token){
                 setErrorMessage('Invalid username or password')
                 return
             }
             Auth.login(data.token)
+            console.log('here')
             setErrorMessage('')
             navigation.navigate('Home')
         })

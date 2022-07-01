@@ -24,9 +24,11 @@ export default function App() {
       // <View style={styles.container}>
         <NavigationContainer theme={MyTheme}>
           <Stack.Navigator >
-            <Stack.Screen name='login' component = {Login} />
-            <Stack.Screen name='Home' component = {Home}  options={({navigation,route})=>({headerLeft:'',headerRight:()=>(<TouchableOpacity style={styles.logout} onPress={()=>logout(navigation)}><Text style={styles.logoutText}>Logout</Text></TouchableOpacity>)})}/>
-            <Stack.Screen name='AllJobs' component = {AllJobs}  options={({navigation})=>({headerRight:()=>(<TouchableOpacity style={styles.logout} onPress={()=>logout(navigation)}><Text style={styles.logoutText}>Logout</Text></TouchableOpacity>)})}/>
+            <Stack.Screen name='Login' component = {Login} />
+            <Stack.Screen name='Home' component = {Home} options={({navigation,route})=>({headerLeft:()=>(<></>),headerRight:()=>(<TouchableOpacity style={styles.logout} onPress={()=>logout(navigation)}><Text style={styles.logoutText}>Logout</Text></TouchableOpacity>)})} />
+            
+            
+            <Stack.Screen name='AllJobs' component = {AllJobs} options={({navigation})=>({headerRight:()=>(<TouchableOpacity style={styles.logout} onPress={()=>logout(navigation)}><Text style={styles.logoutText}>Logout</Text></TouchableOpacity>)})} />
             <Stack.Screen name='AddCompany' component = {AddCompany}  />
             <Stack.Screen name='EditCompany' component = {EditCompany}  />
             <Stack.Screen name='AddJob' component = {AddJob}  />
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
   },
   logoutText:{
     color:'white',
-    fontWeight:400,
+    fontWeight:"400",
     fontSize:18
   },
   footer:{

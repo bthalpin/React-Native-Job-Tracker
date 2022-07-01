@@ -1,6 +1,6 @@
 import {View, Text,TextInput,Button} from 'react-native';
 
-export default function CompanyForm({navigation,setCompany,company,action,handleSubmit}) {
+export default function CompanyForm({navigation,setCompany,company,action,handleSubmit,checkURL}) {
     console.log(setCompany,company,handleSubmit,action)
     return (
         <View>

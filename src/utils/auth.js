@@ -41,6 +41,7 @@ class AuthService {
   }
 
   async login(idToken) {
+    console.log('login')
     await AsyncStorage.setItem('id_token', idToken);
 
   }
