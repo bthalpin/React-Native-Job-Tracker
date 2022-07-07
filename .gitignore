@@ -49,6 +49,7 @@ local.properties
 *.iml
 *.hprof
 gradle/
+debug.keystore
 # node.js
 #
 node_modules/
