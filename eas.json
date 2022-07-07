@@ -1,0 +1,20 @@
+{
+    "cli": {
+      "version": ">= 0.34.0"
+    },
+    "build": {
+        "production": {
+          "android": {
+           
+          },
+          "ios": {
+            
+          }
+      }
+    },
+    "submit": {
+      "production": {
+        
+      }
+    }
+  }
