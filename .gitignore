@@ -48,7 +48,7 @@ build/
 local.properties
 *.iml
 *.hprof
-
+gradle/
 # node.js
 #
 node_modules/
