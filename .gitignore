@@ -50,6 +50,7 @@ local.properties
 *.hprof
 gradle/
 debug.keystore
+android/
 # node.js
 #
 node_modules/
