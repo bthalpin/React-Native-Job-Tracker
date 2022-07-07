@@ -23,7 +23,7 @@
     },
     "android": {
       "package":"com.halpin.jobtracker",
-      "versionCode":2,
+      "versionCode":200,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
