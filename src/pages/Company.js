@@ -239,13 +239,15 @@ const styles = StyleSheet.create({
     },
     card:{
         marginBottom:10,
-        padding:10,
+        padding:5,
         justifyContent:'center',
         alignItems:'center',
         borderColor:'#4297A0',
         borderWidth:1,
+        minWidth:'49%',
         width:'49%',
-        maxHeight:100
+        // height:'min-content'
+        // maxHeight:100
         // borderBottomWidth:1,
         // shadowColor:'black',
         // shadowOffset:{width:0,height:4},

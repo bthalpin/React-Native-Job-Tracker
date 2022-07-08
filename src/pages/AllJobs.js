@@ -31,15 +31,15 @@ function AllJobs({navigation}) {
       <View style={styles.container}>
             <View style={styles.search}>
               {hideArchived?
-                  <MyButton width="33%" color="#7b839c" onClick={()=>setHideArchived('')} text='View Archived'/>
-                  :<MYButton width="33%" color="#7b839c" onClick={()=>setHideArchived('archived')} text='Hide Archived'/>}
+                  <MyButton width="33%" color="#7b839c" action={()=>setHideArchived('')} text='View Archived'/>
+                  :<MyButton width="33%" color="#7b839c" action={()=>setHideArchived('archived')} text='Hide Archived'/>}
                   
-              <TextInput name="jobSearch" style={styles.input}  placeholder="Search your jobs" value={jobSearch} onChange={(e)=>setJobSearch(e.target.value)}></TextInput>
-              <MyButton width="25%" color="#7b839c" onClick={()=>setJobSearch('')} text='Clear'/>
+              <TextInput name="jobSearch" style={styles.input}  placeholder="Search your jobs" value={jobSearch} onChangeText={setJobSearch}></TextInput>
+              <MyButton width="17%" color="#7b839c" action={()=>setJobSearch('')} text='Clear'/>
 
             </View>
-
-            <ScrollView contentContainerStyle={styles.jobContainer} >
+            <View style={styles.jobContainer}>
+            <ScrollView contentContainerStyle={styles.jobs} >
                 
                 {allJobs.filter(job=>job.title.toUpperCase().includes(jobSearch.toUpperCase())&&job.status!==hideArchived).map((job,index)=>{
                     return (
@@ -55,6 +55,7 @@ function AllJobs({navigation}) {
                 })}
 
             </ScrollView>
+            </View>
       </View>
   );
 }
@@ -69,11 +70,17 @@ const styles = StyleSheet.create({
   jobContainer:{
     marginTop:5,
     flex:5,
+    // flexGrow:1,
+    flexWrap:'wrap',
+    // flexDirection:'row',
+    // justifyContent:'space-between'
+  },
+  jobs:{
     flexGrow:1,
     flexWrap:'wrap',
     flexDirection:'row',
     justifyContent:'space-between'
-  },
+},
   buttonContainer:{
       flex:1,
       flexDirection:'row',
@@ -95,16 +102,18 @@ const styles = StyleSheet.create({
       textAlign:'center'
   },
   search:{
-      flex:1,
+      // flex:1,
       flexDirection:'row',
       flexWrap:'wrap',
       alignItems:'center'
   },
   input:{
+    flex:1,
+    flexDirection:'row',
       backgroundColor:'white',
       borderWidth:1,
       borderColor:'#4297A0',
-      padding:10,
+      padding:5,
       width:'42%'
   },
   cardContainer:{
