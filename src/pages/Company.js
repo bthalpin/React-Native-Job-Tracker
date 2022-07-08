@@ -101,12 +101,19 @@ export default function Company({route,navigation}) {
                     <Text style={styles.text}>{company.name}</Text>
                     <Image style={styles.image}  source={company.logo?{uri:company.logo}:require('../images/logo512.png')} alt="logo"></Image>
                     
-                    <Text style={styles.text} onPress={()=>Linking.openURL(`https://google.com/maps/place/${company?.address?.split(' ').join('+')}`)}>{company.address}</Text>
-                    
-                    <Text style={styles.text} onPress={()=>Linking.openURL(`tel:${company.phone}`)}>
-                        {company.phone}
-                    </Text>
-                    <Text style={styles.text} onPress={()=>Linking.openURL(company.website)}>{company.name} Website</Text>
+                    {company?.address?
+                        <Text style={styles.text} onPress={()=>Linking.openURL(`https://google.com/maps/place/${company?.address?.split(' ').join('+')}`)}>{company.address}</Text>
+                    :<></>}
+
+                    {company?.phone?
+                        <Text style={styles.text} onPress={()=>Linking.openURL(`tel:${company.phone}`)}>
+                            {company.phone}
+                        </Text>
+                    :<></>}
+
+                    {company?.website?
+                        <Text style={styles.text} onPress={()=>Linking.openURL(company.website)}>{company.name} Website</Text>
+                    :<></>}
                     <View style={styles.buttonContainer}>
                         <MyButton color='#f56f76' action={()=>navigation.navigate('EditCompany',{company:company})} text='Edit' />
                         <MyButton color='#f56f76' action={()=>setConfirm(true)} text='Delete' />

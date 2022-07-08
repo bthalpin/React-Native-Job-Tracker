@@ -52,7 +52,8 @@ function AddCompany({navigation}) {
 
     return (
         <View style={styles.container} >
-            <CompanyForm company={newCompany} setCompany={setNewCompany} handleSubmit={handleSubmit} action='Add' navigation={navigation} />
+            <CompanyForm company={newCompany} setCompany={setNewCompany} handleSubmit={handleSubmit} action='Add' navigation={navigation} checkURL={checkURL}
+            />
         </View>
     );
 }

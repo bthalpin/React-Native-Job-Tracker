@@ -10,6 +10,8 @@ function AddJob({navigation,route}) {
         description:'',
         contactInfo:'',
         link:'',
+        resumeLink:'',
+        coverLetterLink:'',
         notes:'',
         status:'created',
         company:companyId
@@ -32,12 +34,35 @@ function AddJob({navigation,route}) {
                 description:'',
                 contactInfo:'',
                 link:'',
+                resumeLink:'',
+                coverLetterLink:'',
                 notes:'',
                 status:'created',
                 company:companyId
             })
             navigation.goBack() 
         })
+    }
+    const checkURL = (value,property) => {
+        const currentLength = value.length
+        if (!value.startsWith('http'.slice(0,currentLength))&&value!==''){
+            value = 'https://' + value;
+        }
+        switch (property) {
+            case 'link':
+                setNewJob({...newJob,link:value})
+                break
+            case 'resumeLink':
+                setNewJob({...newJob,resumeLink:value})
+                break
+            case 'coverLetterLink':
+                setNewJob({...newJob,coverLetterLink:value})
+                break
+            default:
+                setNewJob({...newJob,link:value})
+                break
+
+        }
     }
 
     const handleSubmit = (e) => {
@@ -46,7 +71,7 @@ function AddJob({navigation,route}) {
       };
     return (
         <View style={styles.container} >
-            <JobForm newJob={newJob} setNewJob={setNewJob} handleSubmit={handleSubmit} buttonName='Add' navigation={navigation}/>
+            <JobForm newJob={newJob} setNewJob={setNewJob} handleSubmit={handleSubmit} buttonName='Add' navigation={navigation} checkURL={checkURL}/>
         </View>
     );
 }

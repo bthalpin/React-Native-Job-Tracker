@@ -1,7 +1,7 @@
-import { View, Text,Button,StyleSheet} from 'react-native';
+import { View, Text,StyleSheet} from 'react-native';
 import MyButton from './MyButton';
 
-export default function Confirm({action,navigation,cancel,name}) {
+export default function Confirm({action,cancel,name}) {
     
     return (
         <View style={styles.container}>
@@ -9,7 +9,6 @@ export default function Confirm({action,navigation,cancel,name}) {
             <View style={styles.buttonContainer}>
                 <MyButton text='Confirm' action={()=>{action()}}/>
                 <MyButton text='Cancel' action={()=>{cancel(false)}}/>
-
             </View>
         </View>
     );

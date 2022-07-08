@@ -14,6 +14,9 @@ class AuthService {
 
   async loggedIn() {
     const token = await this.getToken();
+    if (!token){
+      return false
+    }
     const expired = await this.isTokenExpired(token)
     return token && !expired;
   }
@@ -41,7 +44,6 @@ class AuthService {
   }
 
   async login(idToken) {
-    console.log('login')
     await AsyncStorage.setItem('id_token', idToken);
 
   }

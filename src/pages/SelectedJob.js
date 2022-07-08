@@ -130,15 +130,15 @@ function SelectedJob({route,navigation}) {
                     {job?.link?
                         <Text style={styles.text} onPress={()=>Linking.openURL(job.link)}>{job?.title} - Job Post</Text>
                     :<></>}
-                    {/* <View>
+                    <View>
                             {job?.resumeLink?
-                                <a href={job.resumeLink}>Resume</a>
-                            :<></>}
+                                <Text style={styles.documents} onPress={()=>Linking.openURL(job.resumeLink)}>Resume</Text>
+                                :<></>}
                             {job?.coverLetterLink?
-                                <a href={job.coverLetterLink}>Cover Letter</a>
+                                <Text style={styles.documents} onPress={()=>Linking.openURL(job.coverLetterLink)}>Cover Letter</Text>
                             :<></>}
 
-                    </View> */}
+                    </View>
                     {job?.description?
                         <View style={styles.section}>
                             <Text>Description:</Text>
@@ -209,6 +209,11 @@ const styles = StyleSheet.create({
         paddingBottom:10
 
     },
+    documents:{
+        textAlign:'center',
+        paddingBottom:10,
+        color:'blue'
+    }
 
 })
 

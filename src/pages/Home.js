@@ -6,16 +6,7 @@ import Auth from '../utils/auth';
 
 function Home({navigation}) {
     const isFocused = useIsFocused()
-    // const [show,setShow] = useState('')
-    // const [add,setAdd] = useState(false)
     const [search,setSearch] = useState('');
-    // const [newCompany,setNewCompany] = useState({
-    //     name:'',
-    //     address:'',
-    //     phone:'',
-    //     website:'',
-    //     logo:'',
-    // })
     const [allCompanies,setAllCompanies ] = useState([])
 
     const loadCompanies = async () => {
@@ -38,35 +29,6 @@ function Home({navigation}) {
           .then((res) => res.json())
           .then((response) => setAllCompanies(response));
     };
-  
-    // const addCompany = () => {
-    //     fetch('https://job-tracker-bh.herokuapp.com/api/company',{
-    //         method:'POST',
-    //         headers:{
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body:JSON.stringify({...newCompany,userId:Auth.getProfile().data._id})
-
-    //     }).then(response=>response.json())
-    //     .then(company=>{
-    //         getCompanies()
-    //         setNewCompany({
-    //             name:'',
-    //             address:'',
-    //             phone:'',
-    //             website:'',
-    //             logo:'',
-    //         })
-    //         setAdd(false)
-    //     })
-    // }
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     if (!newCompany.name.trim()){
-    //         return
-    //     }
-    //     setShow('show')
-    // };
 
     return (
         <View style={styles.container}>    

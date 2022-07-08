@@ -191,7 +191,7 @@ function Login({navigation}) {
                 
                 </View>
                 <View style={styles.buttonContainer}>
-                    <MyButton width='100%' action={register} text='Register' />
+                    <MyButton width='100%' textSize={30} action={register} text='Register' />
                 </View>
                 
                 <Text onPress={()=>changeLogin('login')}>Return to Login</Text>
@@ -225,6 +225,7 @@ function Login({navigation}) {
         padding:10,
     },
     buttonContainer:{
+        width:150,
         paddingBottom:20,
     },
   })
