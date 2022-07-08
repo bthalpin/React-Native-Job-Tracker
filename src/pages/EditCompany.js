@@ -5,7 +5,6 @@ import Auth from '../utils/auth';
 
 function EditCompany({route,navigation}) {
     const {company} = route.params
-    console.log(company)
     useEffect(()=>{
         setNewCompany(company)
     },[])
@@ -18,7 +17,6 @@ function EditCompany({route,navigation}) {
     })
     // const addCompany = async () => {
     //     const userId = await Auth.getProfile()
-    //     console.log(userId)
     //     fetch('https://job-tracker-bh.herokuapp.com/api/company',{
     //         method:'POST',
     //         headers:{
@@ -79,9 +77,9 @@ function EditCompany({route,navigation}) {
                 <TextInput type="text" name="website" placeholder="Website" value={newCompany.website} onChangeText={(value)=>checkURL(value)}></TextInput>
                 
                 <TextInput type="text" name="logo" placeholder="Logo" value={newCompany.logo} onChangeText={(value)=>setNewCompany({...newCompany, logo:value})}></TextInput>
-                <View className="companyFormBtn">
-                    <Button className='cancelButton' onPress={()=>navigation.navigate('Home')} title='Cancel'/>
-                    <Button className="addButton" onPress={handleSubmit} title='Add'/>
+                <View>
+                    <Button onPress={()=>navigation.navigate('Home')} title='Cancel'/>
+                    <Button onPress={handleSubmit} title='Add'/>
 
                 </View> */}
            

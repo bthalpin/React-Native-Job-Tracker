@@ -4,14 +4,11 @@ import Confirm from '../components/Confirm'
 import MyButton from '../components/MyButton';
 import { useIsFocused } from "@react-navigation/native";
 import Auth from '../utils/auth';
-// import { TouchableOpacity } from 'react-native-web';
 
 export default function Company({route,navigation}) {
     const isFocused = useIsFocused()
-    const {companyId,action} = route.params;
-    // console.log(action)
+    const {companyId} = route.params;
     const [token,setToken] = useState('')
-    const [show,setShow] = useState('')
     const [confirm,setConfirm] = useState(false)
     const [edit,setEdit] = useState(false)
     const [allJobs,setAllJobs ] = useState([])
@@ -25,7 +22,6 @@ export default function Company({route,navigation}) {
         logo:'',
     })
     const [jobSearch,setJobSearch] = useState('');
-    // const token = await Auth.getToken();
     const loadPage = async () => {
         const token = await Auth.getToken()
         setToken(token)
@@ -34,7 +30,7 @@ export default function Company({route,navigation}) {
     }
     useEffect(() => {
         loadPage()
-        }, [isFocused]);
+    }, [isFocused]);
     
     const getCompany = (token) => {
         let companyURL = `https://job-tracker-bh.herokuapp.com/api/company/${companyId}`;
@@ -48,7 +44,8 @@ export default function Company({route,navigation}) {
             .then((response) => {
                 setNewCompany(response)
                 setCompany(response)});
-        };
+    };
+
     const getJobs = (token) => {
         let jobURL = `https://job-tracker-bh.herokuapp.com/api/jobs/${companyId}`;
         
@@ -59,7 +56,8 @@ export default function Company({route,navigation}) {
         })
             .then((res) => res.json())
             .then((response) => setAllJobs(response));
-        };
+    };
+
     const deleteCompany = () => {
         let companyURL = `https://job-tracker-bh.herokuapp.com/api/company/${companyId}`;
         
@@ -71,7 +69,8 @@ export default function Company({route,navigation}) {
         })
             .then((res) => res.json())
             .then((response) => navigation.navigate('Home'))
-        };
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!newCompany.name){
@@ -92,13 +91,14 @@ export default function Company({route,navigation}) {
             setEdit(false)
         })
     };
+
     return (
         <View style={styles.container}>
             {confirm?
                 <Confirm action={deleteCompany} cancel={setConfirm} name={company.name}/>
             :
                 <View style={styles.company}>
-                    <Text style={styles.name}>{company.name}</Text>
+                    <Text style={styles.text}>{company.name}</Text>
                     <Image style={styles.image}  source={company.logo?{uri:company.logo}:require('../images/logo512.png')} alt="logo"></Image>
                     
                     <Text style={styles.text} onPress={()=>Linking.openURL(`https://google.com/maps/place/${company?.address?.split(' ').join('+')}`)}>{company.address}</Text>
@@ -113,55 +113,55 @@ export default function Company({route,navigation}) {
                     </View>
                 </View>
             }
-            <View style={styles.buttonContainer}>
 
+            <View style={styles.buttonContainer}>
                 <MyButton color='#f56f76'  text='Add Job' action={()=>navigation.navigate('AddJob',{companyId:company._id})} />
             </View>
-            <View style={styles.jobContainer}>
-
-            {company?.jobs?.length?
-                <>
-                <View style={styles.search}>
-                    {hideArchived?
-                        <MyButton font={10} width='33%' color="#7b839c" action={()=>setHideArchived('')} text='View Archived' />
-                        :
-                        <MyButton width='33%' color="#7b839c" action={()=>setHideArchived('archived')} text='Hide Archived' />
-                    }
-                    <TextInput name="jobSearch" style={styles.input}  placeholder={`Filter ${company.name} jobs`} value={jobSearch} onChangeText={setJobSearch}></TextInput>
-                    <MyButton width='17%' color='#7b839c' action={()=>setJobSearch('')} text='Clear' />
-
-                </View>
 
             <View style={styles.jobContainer}>
 
-                <ScrollView contentContainerStyle={styles.jobs} >
+                {company?.jobs?.length?
+                    <>
+                    <View style={styles.search}>
+                        {hideArchived?
+                            <MyButton font={10} width='33%' color="#7b839c" action={()=>setHideArchived('')} text='View Archived' />
+                            :
+                            <MyButton width='33%' color="#7b839c" action={()=>setHideArchived('archived')} text='Hide Archived' />
+                        }
+                        <TextInput name="jobSearch" style={styles.input}  placeholder={`Filter ${company.name} jobs`} value={jobSearch} onChangeText={setJobSearch}></TextInput>
+                        <MyButton width='17%' color='#7b839c' action={()=>setJobSearch('')} text='Clear' />
+
+                    </View>
+
+                    <View style={styles.jobContainer}>
+
+                        <ScrollView contentContainerStyle={styles.jobs} >
                                 
-                    {allJobs.filter(job=>job.title.toUpperCase().includes(jobSearch.toUpperCase())&&job.status!==hideArchived).map((job,index)=>{
-                        return (
-                            
+                            {allJobs.filter(job=>job.title.toUpperCase().includes(jobSearch.toUpperCase())&&job.status!==hideArchived).map((job,index)=>{
+                                return (
+                                    
 
-                            <TouchableOpacity key={index} style={styles.card} onPress={()=>navigation.navigate('SelectedJob',{
-                                companyId:companyId,
-                                jobId:job._id
-                            })}>
-                                <Text className="jobTitle">{job.title}</Text>
-                                <Text>{job.contactInfo}</Text>
-                                {job.createdAt?<Text>Created on {job.date}</Text>:<></>}
-                            </TouchableOpacity>
-                           
-                    )
-                    })}
-                </ScrollView>
-</View>
+                                    <TouchableOpacity key={index} style={styles.card} onPress={()=>navigation.navigate('SelectedJob',{
+                                        companyId:companyId,
+                                        jobId:job._id
+                                    })}>
+                                        <Text >{job.title}</Text>
+                                        <Text>{job.contactInfo}</Text>
+                                        {job.createdAt?<Text>Created on {job.date}</Text>:<></>}
+                                    </TouchableOpacity>
+                                
+                            )
+                            })}
+                        </ScrollView>
+                    </View>
 
-                </>
-            :
-                <View>
-                    <Text className="noJobs">You currently do not have any jobs for {company.name}, press the add job Button to track your first job.</Text>
-                </View>}
+                    </>
+                :
+                    <View>
+                        <Text>You currently do not have any jobs for {company.name}, press the add job Button to track your first job.</Text>
+                    </View>
+                }
             </View>
-            {/* <ConfirmModal show={show} setShow={setShow} callBack={deleteCompany} action="delete" name={company.name} type="company"/> */}
-
         </View>
     );
 }
@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         padding:5,
-        // justifyContent:'center',
         backgroundColor:'#f0efef',
 
     },
@@ -201,9 +200,6 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between'
     },
-    name:{
-        textAlign:'center'
-    },
     image:{
         flex:1,
         alignSelf:'center',
@@ -216,10 +212,8 @@ const styles = StyleSheet.create({
         textAlign:'center'
     },
     search:{
-        // flex:1.5,
         flexDirection:'row',
         flexWrap:'wrap',
-        // height:20,
         alignItems:'center'
     },
     input:{
@@ -230,13 +224,6 @@ const styles = StyleSheet.create({
         borderColor:'#4297A0',
         padding:5
     },
-    cardContainer:{
-        flex:4,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        flexWrap:'wrap',
-        // width:'100%'
-    },
     card:{
         marginBottom:10,
         padding:5,
@@ -246,13 +233,6 @@ const styles = StyleSheet.create({
         borderWidth:1,
         minWidth:'49%',
         width:'49%',
-        // height:'min-content'
-        // maxHeight:100
-        // borderBottomWidth:1,
-        // shadowColor:'black',
-        // shadowOffset:{width:0,height:4},
-        // shadowRadius:3,
-        // shadowOpacity:0.2
     },
 
 })

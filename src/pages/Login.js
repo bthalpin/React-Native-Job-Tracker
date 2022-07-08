@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
-import {View,Text,TextInput,Image,StyleSheet,CheckBox} from 'react-native';
+import {View,Text,TextInput,Image,StyleSheet} from 'react-native';
 import MyButton from '../components/MyButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Auth from '../utils/auth';
@@ -13,46 +13,45 @@ function Login({navigation}) {
         email:'',
         password:''
     })
-    const [isSelected,setSelection] = useState(false)
+    // const [isSelected,setSelection] = useState(false)
     const [loginOrRegister,setLoginOrRegister] = useState('login')
     const [errorMessage,setErrorMessage] = useState('')
 
-    const saveSelected = async() => {
-        if (isSelected){
-            await AsyncStorage.setItem('selected', true);
-        }else{
-            await AsyncStorage.removeItem('selected');
-        }
-    }
+    // const saveSelected = async() => {
+    //     if (isSelected){
+    //         await AsyncStorage.setItem('selected', true);
+    //     }else{
+    //         await AsyncStorage.removeItem('selected');
+    //     }
+    // }
 
-    const saveLogin = async () => {
-        if (isSelected){
-            await AsyncStorage.setItem('loginInfo', JSON.stringify(user));
+    // const saveLogin = async () => {
+    //     if (isSelected){
+    //         await AsyncStorage.setItem('loginInfo', JSON.stringify(user));
 
-        }
-    }
-    const removeLogin = async () => {
-        await AsyncStorage.removeItem('loginInfo');
+    //     }
+    // }
+    // const removeLogin = async () => {
+    //     await AsyncStorage.removeItem('loginInfo');
 
-    }
+    // }
 
-    const loadLogin = async () => {
-        const selected = await AsyncStorage.getItem('selected')||''
-        console.log(selected,typeof selected,'load')
-        if (selected===''){
-            removeLogin()
-            return
-        }
-        const userData = await AsyncStorage.getItem('loginInfo')||''
-        if (userData){
-            console.log(userData)
-            setUser(JSON.parse(userData))
-            setSelection(true)
-        }
+    // const loadLogin = async () => {
+    //     const selected = await AsyncStorage.getItem('selected')||''
+    //   
+    //     if (selected===''){
+    //         removeLogin()
+    //         return
+    //     }
+    //     const userData = await AsyncStorage.getItem('loginInfo')||''
+    //     if (userData){
+    //         setUser(JSON.parse(userData))
+    //         setSelection(true)
+    //     }
         
         
 
-    }
+    // }
     const checkLoggedIn = async() => {
         const loggedIn = await Auth.loggedIn()
         if (loggedIn){
@@ -121,7 +120,6 @@ function Login({navigation}) {
     }
 
     // const handleInput = ({email,password}) => {
-    //     console.log(email,password,'test')
     //     if (email || email===''){
     //         setUser({...user,email:email})
     //     }
@@ -129,14 +127,12 @@ function Login({navigation}) {
     //         setUser({...user,password:password})
     //     }
         // if (isSelected){
-        //     console.log(user)
         //     saveLogin()
 
         // }
     // }
     const login = (e) => {
         e.preventDefault();
-        console.log('here')
         if (user.email===''||user.password===''){
             return
         }
@@ -148,82 +144,66 @@ function Login({navigation}) {
             body:JSON.stringify({...user,email:user.email.toLowerCase()})
 
         }).then(response=>{
-            console.log('sent')
             return response.json()})
         .then(data=>{
-            console.log('here')
             if (!data.token){
                 setErrorMessage('Invalid username or password')
                 return
             }
             Auth.login(data.token)
-            console.log('here')
             setErrorMessage('')
             navigation.navigate('Home')
         })
     }
+
     return (
         <>
-        {/* <View> */}
         
-                {loginOrRegister==='login'?
-                <KeyboardAwareScrollView  contentContainerStyle={styles.container}>
-                <Image style={styles.image} source={require("../images/logo512.png")} alt="JobTracker Logo"></Image>
-                    
-                        <View style={styles.inputContainer}>
-                          
-                            <TextInput style={styles.input} name="email" type="email" value={user.email} onChangeText={(text)=>setUser({...user,email:text})} placeholder="Enter Email" required autoComplete='email'></TextInput>
-                            
-                            <TextInput style={styles.input} name="password" type="password" value={user.password} onChangeText={(text)=>setUser({...user,password:text})} placeholder="Enter Password" required secureTextEntry autoComplete='password'></TextInput>
-                        </View>
-                        <View style={styles.buttonContainer}>
-                            <MyButton width='100%' action={login} text='Login' />
+        
+        {loginOrRegister==='login'?
+            <KeyboardAwareScrollView  contentContainerStyle={styles.container}>
 
-                        </View>
-                        {/* <TouchableOpacity style={styles.button} onPress={login}>
-                            <Text style={styles.text}>Login</Text>
-                        </TouchableOpacity> */}
-                    
-                    <Text onPress={()=>changeLogin('register')}>Click to Register</Text>
-                    <Text>{errorMessage}</Text>
-                </KeyboardAwareScrollView>
-                :
-                <KeyboardAwareScrollView  contentContainerStyle={styles.container}>
                 <Image style={styles.image} source={require("../images/logo512.png")} alt="JobTracker Logo"></Image>
-                   
-                        <View style={styles.inputContainer}>
-                           
-                            <TextInput style={styles.input} name="name" type="text" value={user.name} onChangeText={(text)=>setUser({...user,name:text})} placeholder="Enter Name" required></TextInput>
-                           
-                            <TextInput style={styles.input} name="email" type="email" value={user.email} onChangeText={(text)=>setUser({...user,email:text})} placeholder="Enter Email" required></TextInput>
-                            
-                            <TextInput style={styles.input} name="password" type="password" value={user.password} onChangeText={(text)=>setUser({...user,password:text})} placeholder="Enter Password" required></TextInput>
-                        
-                        </View>
-                        <View style={styles.buttonContainer}>
-                            <MyButton width='100%' action={register} text='Register' />
-
-                        </View>
-                        {/* <TouchableOpacity style={styles.button} onPress={register} >
-                            <Text style={styles.text}>Register</Text>
-                        </TouchableOpacity> */}
+                <View style={styles.inputContainer}>
                     
-                    <Text onPress={()=>changeLogin('login')}>Return to Login</Text>
-                    <Text>{errorMessage}</Text>
-                </KeyboardAwareScrollView>
-                }
-                {/* <CheckBox value={isSelected} onValueChange={setSelection}><Text>Save info</Text></CheckBox> */}
-          
-        {/* </View> */}
+                    <TextInput style={styles.input} name="email" type="email" value={user.email} onChangeText={(text)=>setUser({...user,email:text})} placeholder="Enter Email" required autoComplete='email'></TextInput>
+                    
+                    <TextInput style={styles.input} name="password" type="password" value={user.password} onChangeText={(text)=>setUser({...user,password:text})} placeholder="Enter Password" required secureTextEntry autoComplete='password'></TextInput>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <MyButton width='100%' action={login} text='Login' />
+                </View>
+                    
+                <Text onPress={()=>changeLogin('register')}>Click to Register</Text>
+                <Text>{errorMessage}</Text>
+                    
+            </KeyboardAwareScrollView>
+        :
+            <KeyboardAwareScrollView  contentContainerStyle={styles.container}>
+                <Image style={styles.image} source={require("../images/logo512.png")} alt="JobTracker Logo"></Image>
+                <View style={styles.inputContainer}>
+
+                    <TextInput style={styles.input} name="name" type="text" value={user.name} onChangeText={(text)=>setUser({...user,name:text})} placeholder="Enter Name" required></TextInput>
+                    
+                    <TextInput style={styles.input} name="email" type="email" value={user.email} onChangeText={(text)=>setUser({...user,email:text})} placeholder="Enter Email" required></TextInput>
+                    
+                    <TextInput style={styles.input} name="password" type="password" value={user.password} onChangeText={(text)=>setUser({...user,password:text})} placeholder="Enter Password" required></TextInput>
+                
+                </View>
+                <View style={styles.buttonContainer}>
+                    <MyButton width='100%' action={register} text='Register' />
+                </View>
+                
+                <Text onPress={()=>changeLogin('login')}>Return to Login</Text>
+                <Text>{errorMessage}</Text>
+            </KeyboardAwareScrollView>
+        }
         </>
     );
   }
 
   const styles = StyleSheet.create({
     container:{
-        // flex:1,
-        // backgroundColor:'#f0efef',
-        // justifyContent:'center',
         alignItems:'center',
         paddingTop:50
     },
@@ -243,22 +223,9 @@ function Login({navigation}) {
         borderWidth:1,
         borderColor:'#4297A0',
         padding:10,
-        // backgroundColor:'white',
-        // paddingLeft:5,
-        // paddingRight:5
     },
     buttonContainer:{
-        // flex:1,
-        // flex:1,
-        // flexDirection:'column',
-        // backgroundColor:'#f56f76',
         paddingBottom:20,
-        // color:'white',
-        // borderRadius:5,
-        // marginTop:0
     },
-    text:{
-        color:'white'
-    }
   })
 export default Login;

@@ -7,6 +7,5 @@ import EditCompany from './EditCompany';
 import Home from './Home';
 import Login from './Login';
 import SelectedJob from './SelectedJob';
-// import Confirm from '../components/Confirm';
 
 export {AddJob,AllJobs,Company,Home,Login,SelectedJob,AddCompany,EditCompany,EditJob}

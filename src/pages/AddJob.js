@@ -5,8 +5,6 @@ import Auth from '../utils/auth';
 
 function AddJob({navigation,route}) {
     const {companyId} = route.params
-    const [show,setShow] = useState('')
-    const [jobData,setJobData] = useState([])
     const [newJob,setNewJob] = useState({
         title:'',
         description:'',
@@ -16,12 +14,6 @@ function AddJob({navigation,route}) {
         status:'created',
         company:companyId
     })
-    useEffect (()=>{
-        if(jobData?.description?.length){
-
-            setNewJob({...newJob,description:`-${jobData.description.join('\n-')}`,link:jobData.URL,title:jobData.title})
-        }
-    },[jobData,newJob])
   
     const addJob = async () =>{
         const user = await Auth.getProfile()
@@ -44,24 +36,19 @@ function AddJob({navigation,route}) {
                 status:'created',
                 company:companyId
             })
-
-            navigation.goBack()
-            
+            navigation.goBack() 
         })
     }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         addJob()
       };
-  return (
+    return (
         <View style={styles.container} >
-        <JobForm newJob={newJob} setNewJob={setNewJob} handleSubmit={handleSubmit} buttonName='Add' navigation={navigation}/>
-        {/* <JobPostData setJobData={setJobData}/> */}
-       
-        {/* <Confirm show={show} setShow={setShow} callBack={addJob} action="create" name={newJob.title} type="job"/> */}
-
-    </View>
-  );
+            <JobForm newJob={newJob} setNewJob={setNewJob} handleSubmit={handleSubmit} buttonName='Add' navigation={navigation}/>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -69,4 +56,5 @@ const styles = StyleSheet.create({
         flex:1
     }
 })
+
 export default AddJob;

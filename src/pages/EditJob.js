@@ -5,7 +5,6 @@ import Auth from '../utils/auth';
 
 function EditJob({navigation,route}) {
     const {job} = route.params
-    console.log(job)
     const [show,setShow] = useState('')
     const [jobData,setJobData] = useState([])
     const [newJob,setNewJob] = useState(job)
