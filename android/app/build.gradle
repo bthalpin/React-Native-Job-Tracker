@@ -136,14 +136,6 @@ def reactNativeArchitectures() {
 }
 
 android {
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -152,8 +144,8 @@ android {
         applicationId 'com.halpin.jobtracker'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 201
+        versionName "1.0.2"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {
@@ -206,10 +198,6 @@ android {
             into("$buildDir/react-ndk/exported")
         }
         afterEvaluate {
-            tasks.withType<JavaCompile>().configureEach {
-                sourceCompatibility = JavaVersion.VERSION_11.toString()
-                targetCompatibility = JavaVersion.VERSION_11.toString()
-            }
             // If you wish to add a custom TurboModule or component locally,
             // you should uncomment this line.
             // preBuild.dependsOn("generateCodegenArtifactsFromSchema")
