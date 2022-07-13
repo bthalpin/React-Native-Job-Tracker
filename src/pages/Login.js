@@ -1,7 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import {View,Text,TextInput,Image,StyleSheet} from 'react-native';
 import MyButton from '../components/MyButton';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Auth from '../utils/auth';
@@ -13,45 +12,10 @@ function Login({navigation}) {
         email:'',
         password:''
     })
-    // const [isSelected,setSelection] = useState(false)
+
     const [loginOrRegister,setLoginOrRegister] = useState('login')
     const [errorMessage,setErrorMessage] = useState('')
 
-    // const saveSelected = async() => {
-    //     if (isSelected){
-    //         await AsyncStorage.setItem('selected', true);
-    //     }else{
-    //         await AsyncStorage.removeItem('selected');
-    //     }
-    // }
-
-    // const saveLogin = async () => {
-    //     if (isSelected){
-    //         await AsyncStorage.setItem('loginInfo', JSON.stringify(user));
-
-    //     }
-    // }
-    // const removeLogin = async () => {
-    //     await AsyncStorage.removeItem('loginInfo');
-
-    // }
-
-    // const loadLogin = async () => {
-    //     const selected = await AsyncStorage.getItem('selected')||''
-    //   
-    //     if (selected===''){
-    //         removeLogin()
-    //         return
-    //     }
-    //     const userData = await AsyncStorage.getItem('loginInfo')||''
-    //     if (userData){
-    //         setUser(JSON.parse(userData))
-    //         setSelection(true)
-    //     }
-        
-        
-
-    // }
     const checkLoggedIn = async() => {
         const loggedIn = await Auth.loggedIn()
         if (loggedIn){
@@ -61,18 +25,7 @@ function Login({navigation}) {
     useEffect (()=>{
         checkLoggedIn()
     },[isFocused])
-    // useEffect(()=>{
-    //     if (isSelected){
-    //         saveLogin()
-    //     }
-    // },[user])
-    // useEffect(()=>{
-    //     loadLogin()
-    // },[isFocused])
-    // useEffect(()=>{
-    //     saveSelected()
-    //     saveLogin()
-    // },[isSelected])
+
     const changeLogin = (path)=>{
         setLoginOrRegister(path)
         setErrorMessage('')
@@ -119,18 +72,6 @@ function Login({navigation}) {
         })
     }
 
-    // const handleInput = ({email,password}) => {
-    //     if (email || email===''){
-    //         setUser({...user,email:email})
-    //     }
-    //     if (password || password ==='') {
-    //         setUser({...user,password:password})
-    //     }
-        // if (isSelected){
-        //     saveLogin()
-
-        // }
-    // }
     const login = (e) => {
         e.preventDefault();
         if (user.email===''||user.password===''){

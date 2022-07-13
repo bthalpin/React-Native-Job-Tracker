@@ -1,12 +1,9 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState} from 'react';
 import {View,StyleSheet} from 'react-native';
 import JobForm from '../components/JobForm';
-import Auth from '../utils/auth';
 
 function EditJob({navigation,route}) {
     const {job} = route.params
-    const [show,setShow] = useState('')
-    const [jobData,setJobData] = useState([])
     const [newJob,setNewJob] = useState(job)
     const editJob = () => {
         let jobURL = `https://job-tracker-bh.herokuapp.com/api/jobs/${job.company._id}/${job._id}`;
@@ -54,10 +51,6 @@ function EditJob({navigation,route}) {
   return (
     <View style={styles.container} >
         <JobForm newJob={newJob} setNewJob={setNewJob} handleSubmit={handleSubmit} buttonName='Update' navigation={navigation} checkURL={checkURL}/>
-        {/* <JobPostData setJobData={setJobData}/> */}
-       
-        {/* <Confirm show={show} setShow={setShow} callBack={addJob} action="create" name={newJob.title} type="job"/> */}
-
     </View>
   );
 }

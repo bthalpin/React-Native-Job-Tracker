@@ -85,33 +85,6 @@ function SelectedJob({route,navigation}) {
             });
     }
 
-    // const changeStatus = async (e) => {
-    //     e.preventDefault()
-    //     setJob({...newJob,status:e.target.value})
-    //     setNewJob({...newJob,status:e.target.value})
-    // }
-
-    // const editJob = (updatedData) => {
-    //     let jobURL = `https://job-tracker-bh.herokuapp.com/api/jobs/${companyId}/${jobId}`;
-        
-    //     fetch(jobURL,{
-    //         method:'PUT',
-    //         headers:{
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body:JSON.stringify(updatedData||newJob)
-
-    //     })
-    //       .then((res) => res.json())
-    //       .then((response) => {
-    //             setJob(response)
-    //             setEdit(false)
-    //         });
-    // }
-    // const handleSubmit = (e) => {
-    //     e.preventDefault()
-    //     editJob()
-    // }
 
     return (
         <View style={styles.container} >
@@ -151,17 +124,6 @@ function SelectedJob({route,navigation}) {
                             <Text>{job?.notes}</Text>
                         </View>
                     :<></>}
-                
-                    {/* <JobPostData setJobData={setJobData} /> */}
-                
-                    {/* <label htmlFor="status">Set status: </label>
-                    <select name="status" value={newJob.status} onChange={changeStatus}>
-                        <option value="created" >---</option>
-                        <option value="applied">Applied</option>
-                        <option value="offer">Offer</option>
-                        <option value="rejected">Rejected</option>
-                        <option value="archived">Archive</option>
-                    </select> */}
 
                     <View style={styles.buttons}>
                         <MyButton color='#f56f76' action={()=>setConfirm(true)} text='Delete'/>

@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState} from 'react';
 import {View,StyleSheet} from 'react-native';
 import JobForm from '../components/JobForm';
 import Auth from '../utils/auth';

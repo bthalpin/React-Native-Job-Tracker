@@ -10,17 +10,10 @@ export default function Company({route,navigation}) {
     const {companyId} = route.params;
     const [token,setToken] = useState('')
     const [confirm,setConfirm] = useState(false)
-    const [edit,setEdit] = useState(false)
     const [allJobs,setAllJobs ] = useState([])
     const [company,setCompany ] = useState({})
     const [hideArchived,setHideArchived] = useState('archived')
-    const [newCompany,setNewCompany] = useState({
-        name:'',
-        address:'',
-        phone:'',
-        website:'',
-        logo:'',
-    })
+    
     const [jobSearch,setJobSearch] = useState('');
     const loadPage = async () => {
         const token = await Auth.getToken()
@@ -42,7 +35,6 @@ export default function Company({route,navigation}) {
         })
             .then((res) => res.json())
             .then((response) => {
-                setNewCompany(response)
                 setCompany(response)});
     };
 
@@ -71,26 +63,6 @@ export default function Company({route,navigation}) {
             .then((response) => navigation.navigate('Home'))
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!newCompany.name){
-            return
-        }
-        fetch(`https://job-tracker-bh.herokuapp.com/api/company/${companyId}`,{
-            method:'PUT',
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            
-            body:JSON.stringify(newCompany)
-
-        }).then(response=>response.json())
-        .then(company=>{
-            setCompany(company)
-            setNewCompany(company)
-            setEdit(false)
-        })
-    };
 
     return (
         <View style={styles.container}>
