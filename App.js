@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View,TouchableOpacity, StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {Home, Login,AllJobs,AddJob,Company,SelectedJob,AddCompany,EditCompany,EditJob} from './src/pages';
@@ -21,9 +21,11 @@ export default function App() {
     navigation.navigate(' ')
   }
   return (
+    <>
+    <StatusBar backgroundColor='#4297A0'/>
       <View style={styles.container}>
         <NavigationContainer theme={MyTheme}>
-          <Stack.Navigator >
+          <Stack.Navigator headerMode='none'>
             <Stack.Screen name=' ' component = {Login} />
 
             <Stack.Screen name='Home' component = {Home} 
@@ -76,6 +78,8 @@ export default function App() {
         </NavigationContainer>
 
       </View>
+    </>
+
   );
 }
 
